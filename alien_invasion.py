@@ -1,6 +1,7 @@
 import sys # Libreria que permite salir del juego una vez que lo decida el jugador
 import pygame # Contiene todos los elementos para crear un videjuego
 from setting import Setting
+from ship import Ship
 
 def run_game():
     """ Función principal para ejecutar el juego """
@@ -18,6 +19,8 @@ def run_game():
     # Definimos un titulo en la ventana del juego
     pygame.display.set_caption("Alien Invasion")
     
+    # Creamos nuestra navecita
+    my_ship = Ship(screen)
     
     # Declaramos un ciclo principal del juego
     while True:
@@ -31,6 +34,9 @@ def run_game():
         
         # Asignamos el color al fondo de la ventana
         screen.fill(game_settings.bg_color)
+        
+        # Posicionamos nuestra nave 
+        my_ship.blitme()
             
         # Dibuja la ventana mas actual que creamos, por lo que cada vez que se actualice
         # Solo estarán los elementos de la nueva ventana
