@@ -21,7 +21,7 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
     
     # Creamos nuestra navecita
-    my_ship = Ship(screen)
+    my_ship = Ship(screen, game_settings)
     
     # Declaramos un ciclo principal del juego
     while True:
