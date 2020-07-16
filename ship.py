@@ -37,13 +37,12 @@ class Ship():
     
     def update(self):
         """ Actualiza la posición de la nave dependiendo la tecla presionada """
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.setting.ship_speed_factor
             
-        if self.moving_left:
+        if self.moving_left and self.rect.left > 0: # Delimitamos la frontera izquierda
             self.center -= self.setting.ship_speed_factor     
             
         self.rect.centerx = self.center    
             
-            
-            
+                        

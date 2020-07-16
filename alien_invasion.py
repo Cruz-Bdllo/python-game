@@ -2,6 +2,7 @@ import pygame # Contiene todos los elementos para crear un videjuego
 from setting import Setting
 from ship import Ship
 import game_functions as gf
+from pygame.sprite import Group # Permite instanciar un grupo de elementos
 
 
 def run_game():
@@ -23,15 +24,19 @@ def run_game():
     # Creamos nuestra navecita
     my_ship = Ship(screen, game_settings)
     
+    # Creamos un grupo de balas
+    bullets = Group()
+    
     # Declaramos un ciclo principal del juego
     while True:
         # Observamos los eventos generados por el teclado y el mouse
-        gf.check_events(my_ship)
-        
-        my_ship.update()
+        # Estos se generan al mover algún elemento del juego
+        gf.check_events(game_settings, screen, my_ship, bullets)
+        my_ship.update() # Actualiza el movimiento del elemento nave
+        bullets.update() # Actualiza el movimiento de las balas
         
         # Asignamos fondo, posicionamos la nave y dibujamos la ventana
-        gf.update_screen(game_settings, screen, my_ship)                             
+        gf.update_screen(game_settings, screen, my_ship, bullets)                             
         
 # Ejecutamos nuestra función principal        
 run_game()
