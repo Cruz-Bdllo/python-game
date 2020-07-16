@@ -1,7 +1,8 @@
-import sys # Libreria que permite salir del juego una vez que lo decida el jugador
 import pygame # Contiene todos los elementos para crear un videjuego
 from setting import Setting
 from ship import Ship
+import game_functions as gf
+
 
 def run_game():
     """ Función principal para ejecutar el juego """
@@ -25,22 +26,12 @@ def run_game():
     # Declaramos un ciclo principal del juego
     while True:
         # Observamos los eventos generados por el teclado y el mouse
-        for event in pygame.event.get(): # obtenemos los eventos generados
-            
-            # Evaluamos el evento que genere el jugador durante el juego, 
-            # para decidir si salimos del juego
-            if event.type == pygame.QUIT:
-                sys.exit()
+        gf.check_events(my_ship)
         
-        # Asignamos el color al fondo de la ventana
-        screen.fill(game_settings.bg_color)
+        my_ship.update()
         
-        # Posicionamos nuestra nave 
-        my_ship.blitme()
-            
-        # Dibuja la ventana mas actual que creamos, por lo que cada vez que se actualice
-        # Solo estarán los elementos de la nueva ventana
-        pygame.display.flip()                             
+        # Asignamos fondo, posicionamos la nave y dibujamos la ventana
+        gf.update_screen(game_settings, screen, my_ship)                             
         
 # Ejecutamos nuestra función principal        
 run_game()

@@ -20,9 +20,19 @@ class Ship():
         self.rect.centerx = self.screen_rect.centerx # Centrado en el eje X window/2
         self.rect.bottom = self.screen_rect.bottom   # Posicionado en el borde de la ventana
         
+        # Bandera para controlar el movimiento hacia la derecha o izquierda
+        self.moving_right = False
+        
     # ------------------------------------------------------------
     
     def blitme(self):
         """ Dibuja la nave en su posición actual """
         self.screen.blit(self.image, self.rect)
     
+    
+    def update(self):
+        """ Actualiza la posición de la nave dependiendo la tecla presionada """
+        if self.moving_right:
+            self.rect.centerx += 1
+            
+             
