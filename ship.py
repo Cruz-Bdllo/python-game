@@ -22,6 +22,7 @@ class Ship():
         
         # Bandera para controlar el movimiento hacia la derecha o izquierda
         self.moving_right = False
+        self.moving_left = False
         
     # ------------------------------------------------------------
     
@@ -35,4 +36,5 @@ class Ship():
         if self.moving_right:
             self.rect.centerx += 1
             
-             
+        if self.moving_left:
+            self.rect.centerx -= 1     

@@ -10,9 +10,16 @@ def check_events(ship):
             if event.key == pygame.K_RIGHT: # Detectamos si se presiono la tecla de fecha derecha
                 # Movemos la imagen de la nave hacia la derecha
                 ship.moving_right = True
+            if event.key == pygame.K_LEFT: # Detectamos si se presiono la tecla de fecha derecha
+                # Movemos la imagen de la nave hacia la derecha
+                ship.moving_left = True
+                
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_RIGHT:
                 ship.moving_right = False
+            if event.key == pygame.K_LEFT:
+                ship.moving_left = False
+        
             
 def update_screen(settings, screen, ship):
     # Asignamos el color al fondo de la ventana
