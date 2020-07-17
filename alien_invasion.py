@@ -5,6 +5,7 @@ import game_functions as gf
 from pygame.sprite import Group # Permite instanciar un grupo de elementos
 
 
+
 def run_game():
     """ Función principal para ejecutar el juego """
     
@@ -21,11 +22,14 @@ def run_game():
     # Definimos un titulo en la ventana del juego
     pygame.display.set_caption("Alien Invasion")
     
-    # Creamos nuestra navecita
+    # Creamos nuestra navecita, grupo de balas y flota de aliencitos
     my_ship = Ship(screen, game_settings)
-    
-    # Creamos un grupo de balas
     bullets = Group()
+    aliens = Group()
+    
+    # Flota de aliens
+    gf.create_fleet_aliens(game_settings, screen, my_ship, aliens)
+    
     
     # Declaramos un ciclo principal del juego
     while True:
@@ -39,8 +43,8 @@ def run_game():
         gf.update_bullets(bullets)
         
         
-        # Asignamos fondo, posicionamos la nave y dibujamos la ventana
-        gf.update_screen(game_settings, screen, my_ship, bullets)                             
+        # Actualizamos la posiciones de los elementos
+        gf.update_screen(game_settings, screen, my_ship, aliens, bullets)                             
         
 # Ejecutamos nuestra función principal        
 run_game()
