@@ -36,11 +36,7 @@ def run_game():
         bullets.update() # Actualiza el movimiento de las balas
         
         # Eliminar los elementos bullet del grupo bullets
-        # una vez que lleguen al borde de la ventana
-        # Metodo copy() nos permite modificar la lista de bullets
-        for bullet in bullets.copy():
-            if bullet.rect.bottom <= 0:
-                bullets.remove(bullet)
+        gf.update_bullets(bullets)
         
         
         # Asignamos fondo, posicionamos la nave y dibujamos la ventana
