@@ -36,13 +36,14 @@ def run_game():
         # Observamos los eventos generados por el teclado y el mouse
         # Estos se generan al mover algún elemento del juego
         gf.check_events(game_settings, screen, my_ship, bullets)
+        
         my_ship.update() # Actualiza el movimiento del elemento nave
         bullets.update() # Actualiza el movimiento de las balas
         
         # Eliminar los elementos bullet del grupo bullets
         gf.update_bullets(bullets)
-        
-        
+        gf.update_aliens(game_settings, aliens)
+                
         # Actualizamos la posiciones de los elementos
         gf.update_screen(game_settings, screen, my_ship, aliens, bullets)                             
         

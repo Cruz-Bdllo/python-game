@@ -19,4 +19,10 @@ class Setting():
         self.bullet_color = (220, 118, 51)
         self.bullets_allowed = 3
         
+        # Configuración de alien
+        self.alien_speed_factor = 1
+        self.fleet_drop_speed = 10
+        # Dirección a la que cada fila de alien se movera (1? derecha, -1 izquierda)
+        self.fleet_direction = 1
+        
         

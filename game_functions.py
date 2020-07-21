@@ -44,6 +44,11 @@ def update_bullets(bullets):
         if bullet.rect.top <= 0:
             bullets.remove(bullet)
 
+def update_aliens(settings, aliens):
+    """ Actializa la posición de los aliens """
+    check_fleet_edges(settings, aliens)
+    aliens.update()
+
 
 def check_key_down_events(event, settings, screen, ship, bullets):
     """ Realiza las acciones para los eventos cuando se PRESIONA alguna tecla """
@@ -118,6 +123,19 @@ def get_number_row(settings, ship_height, alien_height):
     return number_rows
 
 
-
+def check_fleet_edges(settings, aliens):
+    """ Detectar si la flota de aliens llega a los bordes """
+    for alien in aliens.sprites():
+        if alien.check_edges():
+            change_fleet_direction(settings, aliens)
+            break
  
+def change_fleet_direction(settings, aliens):
+    """ Cambio en la dirección de la flota """
+    for alien in aliens.sprites():
+        alien.rect.y += settings.fleet_drop_speed
+    settings.fleet_direction *= -1
+    
+
+
         
