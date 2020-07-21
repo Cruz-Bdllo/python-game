@@ -3,7 +3,7 @@ from setting import Setting
 from ship import Ship
 import game_functions as gf
 from pygame.sprite import Group # Permite instanciar un grupo de elementos
-
+from game_stats import GameStats
 
 
 def run_game():
@@ -14,6 +14,9 @@ def run_game():
     
     # Instanciamos la clase Setting para establecer las configuraciones del juego
     game_settings = Setting()
+    
+    # Instanciamos GameStats para almacenar el puntaje del jugador
+    stats = GameStats(game_settings)
     
     # Establecemos las propiedades de la ventana, dando una tupla como argumento
     screen = pygame.display.set_mode(
@@ -41,8 +44,8 @@ def run_game():
         bullets.update() # Actualiza el movimiento de las balas
         
         # Eliminar los elementos bullet del grupo bullets
-        gf.update_bullets(aliens, bullets)
-        gf.update_aliens(game_settings, aliens)
+        gf.update_bullets(game_settings, screen, my_ship, aliens, bullets)
+        gf.update_aliens(game_settings, stats, screen, my_ship, aliens, bullets)
                 
         # Actualizamos la posiciones de los elementos
         gf.update_screen(game_settings, screen, my_ship, aliens, bullets)                             

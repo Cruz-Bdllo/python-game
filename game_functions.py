@@ -2,7 +2,7 @@ import sys
 import pygame
 from bullet import Bullet
 from alien import Alien
-
+from time import sleep
 
 
 def check_events(settings, screen, ship, bullets):
@@ -35,7 +35,7 @@ def update_screen(settings, screen, ship, aliens, bullets):
     
     
     
-def update_bullets(aliens, bullets):
+def update_bullets(settings, screen, ship, aliens, bullets):
     """ Actualiza la posición de las balas y elimina las ya disparadas """
     # Eliminar los elementos bullet del grupo bullets
     # una vez que lleguen al borde de la ventana
@@ -43,16 +43,31 @@ def update_bullets(aliens, bullets):
     for bullet in bullets.copy():
         if bullet.rect.top <= 0:
             bullets.remove(bullet)
-            
+    
+    check_bullet_alien_collisions(settings, screen, ship, aliens, bullets)        
+    
+    
+def check_bullet_alien_collisions(settings, screen, ship, aliens, bullets):
+    """ Respondiendo al impacto entre la baja y el alien """
     # Checamos si alguna bala ha golpeado a un alien, de ser asi
     # eliminamos ambos elementos
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
     
+    # Verificamos si la flota de aliens esta vacio para crear una nueva
+    if len(aliens) == 0:
+        # Eliminamos las balas existentes
+        bullets.empty()
+        create_fleet_aliens(settings, screen, ship, aliens)
+        
 
-def update_aliens(settings, aliens):
+def update_aliens(settings, stats, screen, ship, aliens, bullets):
     """ Actializa la posición de los aliens """
     check_fleet_edges(settings, aliens)
     aliens.update()
+    
+    # Determinar colisión entre alien y nave
+    if pygame.sprite.spritecollideany(ship, aliens):
+        ship_hit(settings, stats, screen, ship, aliens, bullets)
 
 
 def check_key_down_events(event, settings, screen, ship, bullets):
@@ -142,5 +157,27 @@ def change_fleet_direction(settings, aliens):
     settings.fleet_direction *= -1
     
 
+def ship_hit(settings, stats, screen, ship, aliens, bullets):
+    """ Decrementamos el numero de vidas del jugador """
+    stats.ship_left -= 1
+    
+    # Vaciamos los elementos de la lista de valas y aliens
+    aliens.empty()
+    bullets.empty()
+    
+    # Creamos una nueva flota y centramos la nueva nave
+    create_fleet_aliens(settings, screen, ship, aliens)
+    ship.center_ship()
+    
+    # Pausamos un momento el juego para reestablecer todo
+    sleep(0.5)
+    
 
-        
+def check_aliens_bottom(settings, stats, screen, ship, aliens, bullets):
+    """ Verificamos que algun alien toque el borde inferior de la ventana """
+    screen_rect = screen.get_rect()
+    for alien in aliens.sprites():
+        if alien.rect.bottom >= screen_rect.bottom:
+            ship_hit(settings, stats, screen, ship, aliens, bullets)
+            break
+

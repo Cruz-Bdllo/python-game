@@ -45,4 +45,9 @@ class Ship():
             
         self.rect.centerx = self.center    
             
+    def center_ship(self):
+        """ Posicionamos la nueva nave en el centro de la pantalla """
+        self.center = self.screen_rect.centerx
+        
+        
                         
