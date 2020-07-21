@@ -41,7 +41,7 @@ def run_game():
         bullets.update() # Actualiza el movimiento de las balas
         
         # Eliminar los elementos bullet del grupo bullets
-        gf.update_bullets(bullets)
+        gf.update_bullets(aliens, bullets)
         gf.update_aliens(game_settings, aliens)
                 
         # Actualizamos la posiciones de los elementos

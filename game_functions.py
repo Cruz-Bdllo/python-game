@@ -35,7 +35,7 @@ def update_screen(settings, screen, ship, aliens, bullets):
     
     
     
-def update_bullets(bullets):
+def update_bullets(aliens, bullets):
     """ Actualiza la posición de las balas y elimina las ya disparadas """
     # Eliminar los elementos bullet del grupo bullets
     # una vez que lleguen al borde de la ventana
@@ -43,6 +43,11 @@ def update_bullets(bullets):
     for bullet in bullets.copy():
         if bullet.rect.top <= 0:
             bullets.remove(bullet)
+            
+    # Checamos si alguna bala ha golpeado a un alien, de ser asi
+    # eliminamos ambos elementos
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+    
 
 def update_aliens(settings, aliens):
     """ Actializa la posición de los aliens """
