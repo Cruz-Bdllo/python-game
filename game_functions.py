@@ -5,7 +5,7 @@ from alien import Alien
 from time import sleep
 
 
-def check_events(settings, screen, ship, bullets):
+def check_events(settings, screen, stats, play_button, ship, aliens, bullets):
     """ Define las funciones del juego asi como los listeners de eventos """
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -14,9 +14,35 @@ def check_events(settings, screen, ship, bullets):
             check_key_down_events(event, settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP: # Se deja de presionar la tecla
             check_key_up_events(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y)
+
+
+def check_play_button(settings, screen, stats, play_button, ship, aliens, bullets, mouse_x, mouse_y):
+    """ Comenzar juego al presionar el butón de inicio """
+    button_clicked = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_clicked and not stats.game_active:
+        # Resetear los valores de las velocidades
+        settings.initialize_dynamic_settings()
         
+        # Desactivamos el cursor
+        pygame.mouse.set_visible(False)
+        # Reseteamos las estadisticas
+        stats.reset_stats()
+        stats.game_active = True
+        
+        # Vaciamos la lista de balas y aliens
+        bullets.empty()
+        aliens.empty()
+        
+        # Creamos la nueva flota de aliens y centramos la nave
+        create_fleet_aliens(settings, screen, ship, aliens)
+        ship.center_ship()
+        
+
             
-def update_screen(settings, screen, ship, aliens, bullets):
+def update_screen(settings, screen, stats, ship, aliens, bullets, play_button):
     # Asignamos el color al fondo de la ventana
     screen.fill(settings.bg_color)
     
@@ -28,6 +54,10 @@ def update_screen(settings, screen, ship, aliens, bullets):
     # Invocamos el método que dibuje los elementos y grupos
     ship.blitme()
     aliens.draw(screen)
+    
+    # Dibujar el botón si el juego esta inactivo
+    if not stats.game_active:
+        play_button.draw_botton()
         
     # Dibuja la ventana mas actual que creamos, por lo que cada vez que se actualice
     # Solo estarán los elementos de la nueva ventana
@@ -57,6 +87,7 @@ def check_bullet_alien_collisions(settings, screen, ship, aliens, bullets):
     if len(aliens) == 0:
         # Eliminamos las balas existentes
         bullets.empty()
+        settings.increase_speed()
         create_fleet_aliens(settings, screen, ship, aliens)
         
 
@@ -68,6 +99,8 @@ def update_aliens(settings, stats, screen, ship, aliens, bullets):
     # Determinar colisión entre alien y nave
     if pygame.sprite.spritecollideany(ship, aliens):
         ship_hit(settings, stats, screen, ship, aliens, bullets)
+    
+    check_aliens_bottom(settings, stats, screen, ship, aliens, bullets)
 
 
 def check_key_down_events(event, settings, screen, ship, bullets):
@@ -159,18 +192,21 @@ def change_fleet_direction(settings, aliens):
 
 def ship_hit(settings, stats, screen, ship, aliens, bullets):
     """ Decrementamos el numero de vidas del jugador """
-    stats.ship_left -= 1
-    
-    # Vaciamos los elementos de la lista de valas y aliens
-    aliens.empty()
-    bullets.empty()
-    
-    # Creamos una nueva flota y centramos la nueva nave
-    create_fleet_aliens(settings, screen, ship, aliens)
-    ship.center_ship()
-    
-    # Pausamos un momento el juego para reestablecer todo
-    sleep(0.5)
+    if stats.ship_left > 0:
+        stats.ship_left -= 1
+        
+        # Vaciamos los elementos de la lista de valas y aliens
+        aliens.empty()
+        bullets.empty()
+        
+        # Creamos una nueva flota y centramos la nueva nave
+        create_fleet_aliens(settings, screen, ship, aliens)
+        ship.center_ship()
+        
+        # Pausamos un momento el juego para reestablecer todo
+        sleep(0.5)
+    else:
+        stats.game_active = False
     
 
 def check_aliens_bottom(settings, stats, screen, ship, aliens, bullets):

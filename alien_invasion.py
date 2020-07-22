@@ -4,6 +4,7 @@ from ship import Ship
 import game_functions as gf
 from pygame.sprite import Group # Permite instanciar un grupo de elementos
 from game_stats import GameStats
+from button import Button
 
 
 def run_game():
@@ -25,6 +26,9 @@ def run_game():
     # Definimos un titulo en la ventana del juego
     pygame.display.set_caption("Alien Invasion")
     
+    # Instanciamos el boton de inicio
+    play_button = Button(game_settings, screen, "Jugar")
+    
     # Creamos nuestra navecita, grupo de balas y flota de aliencitos
     my_ship = Ship(screen, game_settings)
     bullets = Group()
@@ -38,17 +42,18 @@ def run_game():
     while True:
         # Observamos los eventos generados por el teclado y el mouse
         # Estos se generan al mover algún elemento del juego
-        gf.check_events(game_settings, screen, my_ship, bullets)
+        gf.check_events(game_settings, screen, stats, play_button, my_ship, aliens, bullets)
         
-        my_ship.update() # Actualiza el movimiento del elemento nave
-        bullets.update() # Actualiza el movimiento de las balas
+        if stats.game_active:     
+            my_ship.update() # Actualiza el movimiento del elemento nave
+            bullets.update() # Actualiza el movimiento de las balas
         
-        # Eliminar los elementos bullet del grupo bullets
-        gf.update_bullets(game_settings, screen, my_ship, aliens, bullets)
-        gf.update_aliens(game_settings, stats, screen, my_ship, aliens, bullets)
+            # Eliminar los elementos bullet del grupo bullets
+            gf.update_bullets(game_settings, screen, my_ship, aliens, bullets)
+            gf.update_aliens(game_settings, stats, screen, my_ship, aliens, bullets)
                 
         # Actualizamos la posiciones de los elementos
-        gf.update_screen(game_settings, screen, my_ship, aliens, bullets)                             
+        gf.update_screen(game_settings, screen, stats, my_ship, aliens, bullets, play_button)                             
         
 # Ejecutamos nuestra función principal        
 run_game()
