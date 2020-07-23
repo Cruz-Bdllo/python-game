@@ -53,7 +53,7 @@ def run_game():
         
             # Eliminar los elementos bullet del grupo bullets
             gf.update_bullets(game_settings, screen, stats, sb, my_ship, aliens, bullets)
-            gf.update_aliens(game_settings, stats, screen, my_ship, aliens, bullets)
+            gf.update_aliens(game_settings, stats, sb, screen, my_ship, aliens, bullets)
                 
         # Actualizamos la posiciones de los elementos
         gf.update_screen(game_settings, screen, stats, sb, my_ship, aliens, bullets, play_button)                             

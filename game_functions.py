@@ -37,6 +37,7 @@ def check_play_button(settings, screen, stats, sb, play_button, ship, aliens, bu
         sb.prep_score()
         sb.prep_high_score()
         sb.prep_level()
+        sb.prep_ships()
         
         # Vaciamos la lista de balas y aliens
         bullets.empty()
@@ -110,16 +111,16 @@ def check_bullet_alien_collisions(settings, screen, stats, sb, ship, aliens, bul
         create_fleet_aliens(settings, screen, ship, aliens)
         
 
-def update_aliens(settings, stats, screen, ship, aliens, bullets):
+def update_aliens(settings, stats, sb, screen, ship, aliens, bullets):
     """ Actializa la posición de los aliens """
     check_fleet_edges(settings, aliens)
     aliens.update()
     
     # Determinar colisión entre alien y nave
     if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(settings, stats, screen, ship, aliens, bullets)
+        ship_hit(settings, stats, sb, screen, ship, aliens, bullets)
     
-    check_aliens_bottom(settings, stats, screen, ship, aliens, bullets)
+    check_aliens_bottom(settings, stats, sb, screen, ship, aliens, bullets)
 
 
 def check_key_down_events(event, settings, screen, ship, bullets):
@@ -209,10 +210,13 @@ def change_fleet_direction(settings, aliens):
     settings.fleet_direction *= -1
     
 
-def ship_hit(settings, stats, screen, ship, aliens, bullets):
+def ship_hit(settings, stats, sb, screen, ship, aliens, bullets):
     """ Decrementamos el numero de vidas del jugador """
     if stats.ship_left > 0:
         stats.ship_left -= 1
+        
+        # Actualizamos la tabla de puntaje
+        sb.prep_ships()
         
         # Vaciamos los elementos de la lista de valas y aliens
         aliens.empty()
@@ -228,12 +232,12 @@ def ship_hit(settings, stats, screen, ship, aliens, bullets):
         stats.game_active = False
     
 
-def check_aliens_bottom(settings, stats, screen, ship, aliens, bullets):
+def check_aliens_bottom(settings, stats, sb, screen, ship, aliens, bullets):
     """ Verificamos que algun alien toque el borde inferior de la ventana """
     screen_rect = screen.get_rect()
     for alien in aliens.sprites():
         if alien.rect.bottom >= screen_rect.bottom:
-            ship_hit(settings, stats, screen, ship, aliens, bullets)
+            ship_hit(settings, stats, sb, screen, ship, aliens, bullets)
             break
 
 def check_high_score(stats, sb):

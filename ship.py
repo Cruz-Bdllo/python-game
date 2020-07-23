@@ -1,11 +1,13 @@
 import pygame
+from pygame.sprite import Sprite
 
-class Ship():
+class Ship(Sprite):
     """ Clase que representa la nave del jugador """
     # PyGame maneja los elementos del juego como rectangulos
     
     def __init__(self, screen, setting):
         """ Inicializa la imagen de la nave y establece la posición de inicio """
+        super(Ship, self).__init__()
         self.screen = screen
         self.setting = setting
         
