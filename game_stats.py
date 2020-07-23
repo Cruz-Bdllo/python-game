@@ -6,6 +6,10 @@ class GameStats():
         self.game_active = False
         self.reset_stats()
         
+        # Record de puntaje
+        self.high_score = 0
+        self.level = 1
+        
         
     def reset_stats(self):
         """ Reinicia el contador del jugador """

@@ -5,6 +5,7 @@ import game_functions as gf
 from pygame.sprite import Group # Permite instanciar un grupo de elementos
 from game_stats import GameStats
 from button import Button
+from scoreborad import Scoreboard
 
 
 def run_game():
@@ -16,12 +17,14 @@ def run_game():
     # Instanciamos la clase Setting para establecer las configuraciones del juego
     game_settings = Setting()
     
-    # Instanciamos GameStats para almacenar el puntaje del jugador
-    stats = GameStats(game_settings)
-    
     # Establecemos las propiedades de la ventana, dando una tupla como argumento
     screen = pygame.display.set_mode(
         (game_settings.screen_width, game_settings.screen_height))
+    
+    # Instanciamos GameStats para almacenar el puntaje del jugador y la tabla de puntaje
+    stats = GameStats(game_settings)
+    sb = Scoreboard(screen, game_settings, stats)
+    
     
     # Definimos un titulo en la ventana del juego
     pygame.display.set_caption("Alien Invasion")
@@ -42,18 +45,18 @@ def run_game():
     while True:
         # Observamos los eventos generados por el teclado y el mouse
         # Estos se generan al mover algún elemento del juego
-        gf.check_events(game_settings, screen, stats, play_button, my_ship, aliens, bullets)
+        gf.check_events(game_settings, screen, stats, sb, play_button, my_ship, aliens, bullets)
         
         if stats.game_active:     
             my_ship.update() # Actualiza el movimiento del elemento nave
             bullets.update() # Actualiza el movimiento de las balas
         
             # Eliminar los elementos bullet del grupo bullets
-            gf.update_bullets(game_settings, screen, my_ship, aliens, bullets)
+            gf.update_bullets(game_settings, screen, stats, sb, my_ship, aliens, bullets)
             gf.update_aliens(game_settings, stats, screen, my_ship, aliens, bullets)
                 
         # Actualizamos la posiciones de los elementos
-        gf.update_screen(game_settings, screen, stats, my_ship, aliens, bullets, play_button)                             
+        gf.update_screen(game_settings, screen, stats, sb, my_ship, aliens, bullets, play_button)                             
         
 # Ejecutamos nuestra función principal        
 run_game()
