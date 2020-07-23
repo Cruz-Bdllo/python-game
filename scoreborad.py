@@ -13,7 +13,7 @@ class Scoreboard():
         self.stats = stats
         
         # Configuración del formato de despliegue
-        self.text_color = (30, 30, 30)
+        self.text_color = (0, 0, 0)
         self.font = pygame.font.SysFont(None, 48)
         
         # Imagen del record, puntaje mas alto y nivel

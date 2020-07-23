@@ -17,3 +17,5 @@ class GameStats():
         """ Reinicia el contador del jugador """
         self.ship_left = self.settings.ship_limit
         self.score = 0
+        
+        
